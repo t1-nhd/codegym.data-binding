@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete signature</title>
+    <style>
+        #id a:visited {
+            text-decoration: none;
+        }
+
+        #button a:nth-child(1):hover {
+            color: #dc2626;
+        }
+
+        #button a:nth-child(2):hover {
+            color: #d97706;
+        }
+
+        #back-btn, #back-btn:visited {
+            text-decoration: none;
+            color: cornflowerblue;
+        }
+
+        #back-btn:hover {
+            color: blue;
+        }
+
+        #sm-btn:hover, #cl-btn:hover {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+    </style>
+</head>
+<body>
+<form th:action="@{/email-configuration/delete}" method="post">
+    <table style="
+	width:30%;
+	font-size: 20px;
+	border: 1px solid black;
+	padding: 20px;
+	border-radius: 20px;
+	box-shadow: 10px 10px 5px #888888;
+	color: black;
+">
+        <thead>
+        <tr>
+            <input type="hidden" name="email" th:value="${email}">
+           <td style="color:red; font-size: 100%; text-align: center; font-weight: bold;" colspan="2">You want to delete this signature?</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th style="text-align: start; padding-top: 10px">Language:</th>
+            <td style="padding-top: 10px" th:text="${emailConfiguration.language}"></td>
+        </tr>
+        <tr>
+            <th style="text-align: start; padding-top: 10px">Page size:</th>
+            <td style="padding-top: 10px" th:text="${emailConfiguration.pageSize}"></td>
+        </tr>
+        <tr>
+            <th style="text-align: start; padding-top: 10px">Spam filter:</th>
+            <td style="padding-top: 10px" th:text="${emailConfiguration.spamFilterEnabled?'Enabled':'Disabled'}"></td>
+        </tr>
+        <tr>
+            <th style="text-align: start; padding-top: 10px">Signature:</th>
+            <td style="font-weight: bolder; padding-top: 10px;" th:text="${emailConfiguration.signature}"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:text="${emailConfiguration.subSignature}"></td>
+        </tr>
+        <tr id="button">
+            <td colspan="2" style="margin-top: 10px;">
+                <div style="display: flex; justify-content: center;">
+                    <button id="cl-btn"
+                            style="border-color: #f59e0b; background-color: #f59e0b; border-radius: 10px; padding: 10px;  margin: 20px 3px;">
+                        <a style="text-decoration: none;" th:href="@{/email-configuration/{email}(email=${email})}">Cancel</a>
+                    </button>
+                    <input id="sm-btn" type="submit" value="Confirm"
+                           style="text-decoration: none; border-color: #dc2626; background-color: #dc2626; border-radius: 10px; padding: 10px;  margin: 20px 3px;">
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<div style="padding: 20px 10px;">
+    <a th:href="@{/email-configuration}" id="back-btn">Back to home</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Signature checking</title>
+</head>
+<body>
+<div class="container">
+    <h1>Check your signature</h1>
+    <form th:action="@{/email-configuration/redirect-to-view}" method="get">
+        <div>
+            <input type="email" name="email" id="email" placeholder="Type your email"  value="test@test.com">
+            <input type="submit" th:value="Check">
+        </div>
+        <div>
+            <p th:text="${error}"></p>
+        </div>
+    </form>
+    <h2>If you don't have any Email yet</h2>
+    <form th:action="@{/email-configuration/new-email}" method="post">
+        <div>
+            <input type="email" name="newEmail" id="new-email" placeholder="Type your new email">
+            <input type="submit" th:value="Create">
+        </div>
+        <div>
+            <p th:text="${email_exist}"></p>
+            <p th:text="${message}"></p>
+        </div>
+    </form>
+</div>
+</body>
+</html>

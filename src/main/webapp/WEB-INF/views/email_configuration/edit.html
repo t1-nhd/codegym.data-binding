@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your signature</title>
+    <style>
+        .btn:hover{
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+        .btn{
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        #edit-table{
+            width: 30%;
+            font-size: 20px;
+            border: 1px solid black;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 10px 10px 5px #888888;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<form th:action="@{/email-configuration/edit}" th:object="${emailConfiguration}" method="post">
+    <input type="hidden" name="email" th:value="${email}"/>
+    <table id="edit-table">
+        <thead>
+        <tr>
+            <th colspan="2" style="margin: 20px 0;">Edit signature</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th style="text-align: start;">Languages:</th>
+            <td>
+                <select th:field="*{language}" style="
+												padding: 5px;
+												border-radius: 10px;
+													">
+                    <option th:value="English" th:selected="${emailConfiguration.language=='English'}" selected>
+                        English
+                    </option>
+                    <option th:value="Vietnamese" th:selected="${emailConfiguration.language=='Vietnamese'}">
+                        Vietnamese
+                    </option>
+                    <option th:value="Japanese" th:selected="${emailConfiguration.language=='Japanese'}">Japanese
+                    </option>
+                    <option th:value="Chinese" th:selected="${emailConfiguration.language=='Chinese'}">Chinese</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th style="text-align: start;">Page size:</th>
+            <td style="padding-top: 15px;">
+                Show
+                <select th:field="*{pageSize}" style="border-radius: 10px; padding: 5px;">
+                    <option th:value="5" th:selected="*{pageSize==5}" selected>5</option>
+                    <option th:value="10" th:selected="*{pageSize==10}">10</option>
+                    <option th:value="15" th:selected="*{pageSize==15}">15</option>
+                    <option th:value="25" th:selected="*{pageSize==25}">25</option>
+                    <option th:value="50" th:selected="*{pageSize==50}">50</option>
+                    <option th:value="100" th:selected="*{pageSize==100}">100</option>
+                </select>
+                email per page
+            </td>
+        </tr>
+        <tr>
+            <th style="text-align: start;">Spams filter:</th>
+            <td style="padding-top: 15px;">
+                <input type="checkbox" th:field="*{spamFilterEnabled}" th:checked="*{spamFilterEnabled}"/> Enable spams
+                filter
+            </td>
+        </tr>
+        <tr>
+            <th style="text-align: start;">Signature:</th>
+            <td style="padding-top: 15px;">
+                <div class="display: block;">
+                    <div style="width: 200px">
+                        <textarea th:field="*{signature}" th:text="*{signature}" rows="1"
+                                  style="padding: 5px; font-weight: bolder; resize: none; border-bottom: none; border-top-left-radius: 10px; border-top-right-radius: 10px;"></textarea>
+                    </div>
+                    <div style="width: 200px; margin-top: -5px;">
+                        <textarea th:field="*{subSignature}" th:text="*{signature}" rows="5"
+                                  style="padding: 5px; resize: none; border-top: none;  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;"></textarea>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;">
+                <button class="btn" style="border-color: #f59e0b; background-color: #f59e0b;">
+                    <a th:href="@{/email-configuration/{email}(email=${email})}">Cancel</a>
+                </button>
+                <input class="btn" type="submit" value="Edit signature" style="border-color: lightgray; background-color: lightgrey;">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Title</title>
+  <style>
+    #container {
+      width: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      justify-content: center;
+    }
+    #heading {
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+    }
+    #heading h3 {
+      color: red;
+    }
+    #information {
+      width: 100%;
+    }
+    .red {
+      color: red;
+      font-style: italic;
+      font-weight: bold;
+    }
+    .red::before {
+      content: "(*)";
+    }
+    .input {
+      width: 100%;
+      padding: 8px 5px;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      margin-top: 10px;
+      gap: 15px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: auto auto;
+      margin-top: 10px;
+      gap: 15px;
+    }
+    .grid-items {
+      width: 100%;
+    }
+    .mt-15px {
+      margin-top: 15px;
+    }
+    .flex {
+      display: flex;
+      justify-content: space-between;
+    }
+    .trieu-chung-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .trieu-chung-table td,
+    .trieu-chung-table th {
+      padding: 5px 10px;
+    }
+    .trieu-chung-table thead {
+      background-color: lightgray;
+    }
+    .sm-btn {
+      padding: 15px;
+      background-color: #31d431;
+      border-radius: 20px;
+      color: white;
+      font-weight: bold;
+      border: none;
+    }
+    .sm-btn:hover{
+      background-color: #1c961c;
+    }
+  </style>
+</head>
+<body>
+<div id="container">
+  <div style="width: 90%;">
+    <div id="heading">
+      <h2>TỜ KHAI Y TẾ</h2>
+      <h3>
+        ĐÂY LÀ TÀI LIỆU QUAN TRỌNG, THÔNG TIN CỦA ANH/CHỊ SẼ GIÚP CƠ QUAN Y
+        TẾ LIÊN LẠC KHI CẦN THIẾT ĐỂ ĐỀ PHÒNG CHỐNG DỊCH BỆNH TRUYỀN NHIỄM
+      </h3>
+      <h4>
+        Khuyến cáo: Khai báo thông tin sai là vi phạm pháp luật Việt Nam và
+        có thể xử lý hình sự
+      </h4>
+    </div>
+    <form th:action="@{/to-khai-y-te/save}" method="post" th:object="${toKhaiYTe}">
+      <div id="information">
+        <div style="width: 100%">
+          <label for="hoTen"
+          >Họ tên: (ghi chữ IN HOA) <span class="red"></span> </label
+          ><br />
+          <input class="input" type="text" required name="hoTen" id="hoTen" th:field="*{hoTen}" th:value="*{hoTen}" />
+        </div>
+        <div class="grid-3">
+          <div class="grid-items">
+            <label for="namSinh">Năm sinh <span class="red"></span> </label>
+            <br />
+            <input class="input" type="text" required name="namSinh" id="namSinh" th:field="*{namSinh}" th:value="*{namSinh}" />
+          </div>
+          <div class="grid-items">
+            <label for="gioiTinh">Giới tính <span class="red"></span> </label>
+            <br />
+            <select class="input" name="gioiTinh" id="gioiTinh" th:field="*{gioiTinh}">
+              <option th:value="1" th:text="Nam" th:selected="(*{gioiTinh} == true)"></option>
+              <option th:value="0" th:text="Nữ" th:selected="(*{gioiTinh} == false)"></option>
+            </select>
+          </div>
+          <div class="grid-items">
+            <label for="quocTich">Quốc tịch <span class="red"></span></label>
+            <br />
+            <select class="input" name="quocTich" id="quocTich" th:field="*{quocTich}">
+              <option th:each="qt : ${quoctich}" th:text="${qt}" th:value="${qt}" th:selected="(*{quocTich} == ${qt})"></option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-15px">
+          <div>
+            <label for="soDinhDanh"
+            >Số hộ chiếu hoặc số CMND hoặc giấy thông hành hợp pháp khác
+              <span class="red"></span
+              ></label>
+            <input th:field="*{soDinhDanh}" required th:value="*{soDinhDanh}" pattern="[0-9]{12}" class="input" type="text" id="soDinhDanh" name="soDinhDanh" />
+          </div>
+        </div>
+        <div class="mt-15px grid-2">
+          <div class="grid-items">
+            <label for="sdt">Số điện thoại <span class="red"></span></label>
+            <br />
+            <input th:field="*{sdt}" required th:value="*{sdt}" class="input" type="text" id="sdt" name="sdt" pattern="[0-9]{10}"/>
+          </div>
+          <div class="grid-items">
+            <label for="email">Email <span class="red"></span></label> <br />
+            <input class="input" required type="email" name="email" id="email" th:field="*{email}" th:value="*{email}"/>
+          </div>
+        </div>
+        <div class="mt-15px">
+          <b
+          >Trong vòng 14 ngày qua, Anh/Chị có thấy xuất hiện dấu hiệu nào
+            sau đây không? <span class="red"></span
+            ></b>
+          <div class="flex" style="margin-top: 5px">
+            <div style="width: 50%">
+              <table class="trieu-chung-table" border="1">
+                <thead>
+                <tr>
+                  <th style="width: 80%">Triệu chứng</th>
+                  <th style="width: 10%">Có</th>
+                  <th style="width: 10%">Không</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Sốt <span class="red"></span></td>
+                  <td style="text-align: center">
+                    <input type="radio" name="sot" th:value="1" th:field="*{dauHieuTrong14Ngay['sot']}" />
+                  </td>
+                  <td style="text-align: center">
+                    <input type="radio" name="sot" th:value="0" th:field="*{dauHieuTrong14Ngay['sot']}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Ho <span class="red"></span></td>
+                  <td style="text-align: center">
+                    <input type="radio" name="ho" th:field="*{dauHieuTrong14Ngay['ho']}" th:value="1" />
+                  </td>
+                  <td style="text-align: center">
+                    <input type="radio" name="ho" th:field="*{dauHieuTrong14Ngay['ho']}" th:value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Khó thở <span class="red"></span></td>
+                  <td style="text-align: center">
+                    <input type="radio" name="khoTho" th:field="*{dauHieuTrong14Ngay['khoTho']}" th:value="1"/>
+                  </td>
+                  <td style="text-align: center">
+                    <input type="radio" name="khoTho" th:field="*{dauHieuTrong14Ngay['khoTho']}" th:value="0"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Đau họng <span class="red"></span></td>
+                  <td style="text-align: center">
+                    <input type="radio" name="dauHong" th:field="*{dauHieuTrong14Ngay['dauHong']}" th:value="1" />
+                  </td>
+                  <td style="text-align: center">
+                    <input type="radio" name="dauHong" th:field="*{dauHieuTrong14Ngay['dauHong']}" th:value="0" />
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="width: 50%">
+              <table class="trieu-chung-table" border="1">
+                <thead>
+                <tr>
+                  <th style="width: 80%">Triệu chứng</th>
+                  <th style="width: 10%">Có</th>
+                  <th style="width: 10%">Không</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Nôn/buồn nôn <span class="red"></span></td>
+                  <td style="text-align: center">
+                    <input type="radio" name="buonNon" th:field="*{dauHieuTrong14Ngay['buonNon']}" th:value="1"/>
+                  </td>
+                  <td style="text-align: center">
+                    <input type="radio" name="buonNon" th:field="*{dauHieuTrong14Ngay['buonNon']}" th:value="0"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Tiêu chảy <span class="red"></span></td>
+                  <td style="text-align: center">
+                    <input type="radio" name="tieuChay" th:field="*{dauHieuTrong14Ngay['tieuChay']}" th:value="1" />
+                  </td>
+                  <td style="text-align: center">
+                    <input type="radio" name="tieuChay" th:field="*{dauHieuTrong14Ngay['tieuChay']}" th:value="0" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Xuất huyết ngoài da <span class="red"></span></td>
+                  <td style="text-align: center">
+                    <input type="radio" name="xuatHuyetNgoaiDa" th:field="*{dauHieuTrong14Ngay['xuatHuyetNgoaiDa']}" th:value="1"/>
+                  </td>
+                  <td style="text-align: center">
+                    <input type="radio" name="xuatHuyetNgoaiDa" th:field="*{dauHieuTrong14Ngay['xuatHuyetNgoaiDa']}" th:value="0"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Nổi ban ngoài da <span class="red"></span></td>
+                  <td style="text-align: center">
+                    <input type="radio" name="noiBanNgoaiDa" th:field="*{dauHieuTrong14Ngay['noiBanNgoaiDa']}" th:value="1" />
+                  </td>
+                  <td style="text-align: center">
+                    <input type="radio" name="noiBanNgoaiDa" th:field="*{dauHieuTrong14Ngay['noiBanNgoaiDa']}" th:value="0" />
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="mt-15px">
+          <b> Lịch sử phơi nhiễm: trong vòng 14 ngày qua, Anh/Chị có </b>
+          <span class="red"></span>
+          <div style="margin-top: 5px">
+            <table class="trieu-chung-table" border="1">
+              <thead>
+              <tr>
+                <th style="width: 90%"></th>
+                <th style="width: 5%">Có</th>
+                <th style="width: 5%">Không</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>
+                  Đến trang trại chăn nuôi / chợ buôn bán động vật sống / cơ
+                  sở giết mổ động vật / tiếp xúc động vật
+                </td>
+                <td style="text-align: center">
+                  <input type="radio" name="lichSuPhoiNhiem1" th:field="*{lichSuPhoiNhiem[1]}" th:value="1"/>
+                </td>
+                <td style="text-align: center">
+                  <input type="radio" name="lichSuPhoiNhiem1" th:field="*{lichSuPhoiNhiem[1]}" th:value="0"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Tiếp xúc gần (<2m) với người mắc bệnh viêm đường hô hấp do
+                  nCoV
+                </td>
+                <td style="text-align: center">
+                  <input type="radio" name="lichSuPhoiNhiem2" th:field="*{lichSuPhoiNhiem[2]}" th:value="1" />
+                </td>
+                <td style="text-align: center">
+                  <input type="radio" name="lichSuPhoiNhiem2" th:field="*{lichSuPhoiNhiem[2]}" th:value="0" />
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="margin: 20px 0">
+          <b style="color: red">
+            Dữ liệu bạn cung cấp hoàn toàn bảo mật và chỉ phục vụ cho việc
+            phòng chống dịch, thuộc quản lý của Ban chỉ đạo quốc gia về Phòng
+            chống dịch Covid-19. Khi bạn nhấn nút "Gửi" là bạn đã hiểu và đồng
+          </b>
+        </div>
+        <div style="display: flex; justify-content: center">
+          <input class="sm-btn" type="submit" value="GỬI TỜ KHAI" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>
